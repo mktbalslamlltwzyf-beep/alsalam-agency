@@ -7,11 +7,32 @@
         :root { --blue: #0a1f44; --gold: #c5a059; }
         body { font-family: sans-serif; margin: 0; background-color: #f4f4f4; color: #333; }
         header { background-color: var(--blue); color: var(--gold); padding: 2rem; text-align: center; }
-        section { padding: 2rem; max-width: 800px; margin: auto; background: white; margin-top: 20px; border-radius: 8px; }
-        h2 { color: var(--blue); border-bottom: 2px solid var(--gold); display: inline-block; }
+        section { padding: 2rem; max-width: 1200px; margin: auto; background: white; margin-top: 20px; border-radius: 8px; }
+        h2 { color: var(--blue); border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 0.5rem; }
         .services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         footer { text-align: center; padding: 2rem; background: var(--blue); color: white; margin-top: 20px; }
         a { color: var(--gold); text-decoration: none; font-weight: bold; }
+        
+        /* المعرض التفاعلي */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 2rem; }
+        .gallery-item { position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
+        .gallery-item:hover { transform: scale(1.05); }
+        .gallery-item img { width: 100%; height: 250px; object-fit: cover; display: block; }
+        .gallery-item-title { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10, 31, 68, 0.9), transparent); color: var(--gold); padding: 1rem; text-align: center; font-weight: bold; }
+        
+        /* النافذة المنبثقة (Modal) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
+        .modal-content { position: relative; margin: auto; display: block; width: 90%; max-width: 800px; max-height: 80vh; top: 50%; transform: translateY(-50%); border-radius: 8px; }
+        .modal-image { width: 100%; height: auto; max-height: 70vh; object-fit: contain; }
+        .modal-title { background: var(--blue); color: var(--gold); padding: 1rem; text-align: center; font-size: 1.2rem; font-weight: bold; border-radius: 8px 8px 0 0; }
+        .close { position: absolute; top: 15px; right: 25px; color: var(--gold); font-size: 28px; font-weight: bold; cursor: pointer; background: rgba(0,0,0,0.5); padding: 0 10px; border-radius: 4px; }
+        .close:hover { color: white; }
+        
+        /* زر الفلترة */
+        .filter-buttons { display: flex; gap: 10px; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+        .filter-btn { padding: 0.7rem 1.5rem; background: var(--blue); color: var(--gold); border: 2px solid var(--gold); border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .filter-btn.active { background: var(--gold); color: var(--blue); }
+        .filter-btn:hover { background: var(--gold); color: var(--blue); }
     </style>
 </head>
 <body>
@@ -23,9 +44,7 @@
 
 <section>
     <h2>من نحن</h2>
-    <p>    في وكالة السلام للدعاية والإعلان، نؤمن بأن كل علامة تجارية لها قصة فريدة تستحق أن تروى بأبهى حلة. نحن وكالة متخصصة في تقديم حلول إعلانية مبتكرة ومتكاملة تجمع بين الإبداع والاحترافية.
-نتميز بفريق عمل شغوف يعمل على تحويل أفكارك إلى واقع ملموس من خلال تصميم هويات بصرية تعزز حضورك في السوق، وإنتاج فيديوهات مونتاج وموشن جرافيك تجذب الانتباه. كما نعتني بكتابة المحتوى الإبداعي، وإدارة حسابات التواصل الاجتماعي بكل احترافية، وتصميم بروفايلات إلكترونية تعكس قيم ومكانة مؤسستك.
-غايتنا هي بناء جسور الثقة بينك وبين عملائك من خلال حملات ترويجية وإعلانية تترك بصمة لا تنسى."      .</p>
+    <p>في وكالة السلام للدعاية والإعلان، نؤمن بأن كل علامة تجارية لها قصة فريدة تستحق أن تروى بأبهى حلة. نحن نتميز بفريق عمل شغوف يعمل على تحويل أفكارك إلى واقع ملموس من خلال تصميم هويات بصرية تعزز حضورك في السوق. غايتنا هي بناء جسور الثقة بينك وبين عملائك من خلال حملات ترويجية وإعلانية تترك بصمة لا تنسى.</p>
 </section>
 
 <section>
@@ -37,6 +56,35 @@
     </div>
 </section>
 
+<!-- قسم الأعمال والمعرض التفاعلي -->
+<section>
+    <h2>أعمالنا</h2>
+    <p style="text-align: center; color: #666;">اكتشف مجموعة من أفضل أعمالنا التي تعكس احترافيتنا وإبداعنا</p>
+    
+    <!-- أزرار الفلترة -->
+    <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterGallery('all')">جميع الأعمال</button>
+        <button class="filter-btn" onclick="filterGallery('packaging')">حزم منتجات</button>
+        <button class="filter-btn" onclick="filterGallery('promotional')">حملات ترويجية</button>
+        <button class="filter-btn" onclick="filterGallery('graphics')">تصاميم جرافيك</button>
+        <button class="filter-btn" onclick="filterGallery('cards')">بطاقات وتصاميم</button>
+    </div>
+    
+    <!-- المعرض -->
+    <div class="gallery" id="gallery">
+        <!-- سيتم إضافة الصور هنا ديناميكياً -->
+    </div>
+</section>
+
+<!-- النافذة المنبثقة لعرض الصورة بحجم أكبر -->
+<div id="imageModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title" id="modalTitle">العمل</div>
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-image" id="modalImage" src="" alt="الصورة">
+    </div>
+</div>
+
 <footer>
     <p>تواصل معنا عبر:</p>
     <a href="https://www.facebook.com/share/1GGFUyacco/">فيسبوك</a> | 
@@ -45,6 +93,75 @@
     <a href="https://www.linkedin.com/in/وكالة-السلام-للدعاية-والإعلان-94b738276/">لينكد إن</a> | 
     <a href="https://chat.whatsapp.com/Eu5I5TTfRNyDZPKugCN1Mc">واتساب</a>
 </footer>
+
+<script>
+    // قائمة الأعمال مع تصنيفاتها
+    const artworks = [
+        { src: "باكج شاحن.jpg", title: "باكج شاحن", category: "packaging" },
+        { src: "باكج العطر33.jpg", title: "باكج العطر", category: "packaging" },
+        { src: "باكج علاج.jpg", title: "باكج علاج", category: "packaging" },
+        { src: "الكيس 1 الخلف.jpg", title: "تصميم الكيس", category: "packaging" },
+        { src: "الكرت خلفي.jpg", title: "بطاقة عمل", category: "cards" },
+        { src: "تصميم بوست انستجرام عيد الاضحى بني بسيط_20260523_210327_٠٠٠٠.jpg", title: "منشور عيد الأضحى", category: "promotional" },
+        { src: "منشور جمعه.jpg", title: "منشور جمعة", category: "promotional" },
+        { src: "منشور للفيسبوك.jpg", title: "منشور فيسبوك", category: "promotional" },
+        { src: "التميز.jpg", title: "تصميم التميز", category: "graphics" },
+        { src: "الساعة الوقت.jpg", title: "ساعة التوقيت", category: "graphics" },
+        { src: "السلام الجديد.jpg", title: "شعار السلام الجديد", category: "graphics" },
+        { src: "برجر.jpg", title: "تصميم برجر", category: "graphics" },
+        { src: "عيد.jpg", title: "تصميم العيد", category: "promotional" },
+        { src: "مستشفى السلام.jpg", title: "مستشفى السلام", category: "graphics" }
+    ];
+
+    let currentFilter = 'all';
+
+    // دالة لتصفية وعرض الأعمال
+    function filterGallery(category) {
+        currentFilter = category;
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+        
+        // تحديث أزرار الفلترة
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // عرض الأعمال المناسبة
+        artworks.forEach(art => {
+            if (category === 'all' || art.category === category) {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${art.src}" alt="${art.title}" onclick="openModal('${art.src}', '${art.title}')">
+                    <div class="gallery-item-title">${art.title}</div>
+                `;
+                gallery.appendChild(item);
+            }
+        });
+    }
+
+    // دالة فتح النافذة المنبثقة
+    function openModal(imgSrc, title) {
+        document.getElementById('imageModal').style.display = 'block';
+        document.getElementById('modalImage').src = imgSrc;
+        document.getElementById('modalTitle').textContent = title;
+    }
+
+    // دالة إغلاق النافذة المنبثقة
+    function closeModal() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // إغلاق النافذة عند الضغط خارجها
+    window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // تحميل جميع الأعمال عند فتح الصفحة
+    filterGallery('all');
+</script>
 
 </body>
 </html>
