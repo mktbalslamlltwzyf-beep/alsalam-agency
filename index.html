@@ -97,6 +97,23 @@
 <script>
     // قائمة الأعمال مع تصنيفاتها
     const artworks = [
+        function displayGallery(category = 'all') {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = ''; // تفريغ المعرض الحالي
+
+    artworks.forEach(item => {
+        if (category === 'all' || item.category === category) {
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            div.innerHTML = `<img src="${item.src}" alt="${item.title}">`;
+            gallery.appendChild(div);
+        }
+    });
+}
+
+// عرض الكل عند تحميل الصفحة
+displayGallery();
+
         { src: "باكج شاحن.jpg", title: "باكج شاحن", category: "packaging" },
         { src: "باكج العطر33.jpg", title: "باكج العطر", category: "packaging" },
         { src: "باكج علاج.jpg", title: "باكج علاج", category: "packaging" },
